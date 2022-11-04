@@ -1,7 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 
 function App() {
+
+  // create a state for transactions to display
+  const [transactions, setTransactions] = useState([]);
+
+  function activateLasers(){
+    fetch("http:localhost:8080/transactions")
+      .then(res => res.json()) //synchronization
+      .then(json => {setTrasactions(json);})
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +28,22 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={activateLasers}>
+          Activate Lasers
+        </button>
+
+        <p>
+          we are that team!!!
+        </p>
+
+        <p> {transactions.map(transaction => {
+          if (transaction.julia) {
+            return (<p key={i}> Julia has: {transaction.Julia}</p>)
+          }
+          return <p key={i}>{transaction}</p>
+        })}
+        </p>
+
       </header>
     </div>
   );
