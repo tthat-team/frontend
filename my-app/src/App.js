@@ -36,11 +36,11 @@ function App() {
           we are that team!!!
         </p>
 
-        <p> {transactions.map(transaction => {
-          if (transaction.julia) {
-            return (<p key={i}> Julia has: {transaction.Julia}</p>)
+        <p> {transactions.map((transaction, i) => {
+          if (transaction.hasOwnProperty('Julia')) {
+            return (<p key={i}> Julia has: {SON.stringify(transaction.Julia)}</p>)
           }
-          return <p key={i}>{transaction}</p>
+          return <p key={i}>{JSON.stringify(transaction)}</p>
         })}
         </p>
 
