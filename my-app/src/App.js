@@ -11,7 +11,7 @@ function App() {
   function activateLasers(){
     fetch("http:localhost:8080/transactions")
       .then(res => res.json()) //synchronization
-      .then(json => {setTrasactions(json);}) //not defined
+      .then(json => {showAllTransactions(json);}) 
   }
 
 
