@@ -13,6 +13,8 @@ function App() {
   const [name, setName] = useState("");
   const [optimizedTrasfers, setOptimizedTransfers] = useState([]);
   const [amountPaid, setAmountPaid] = useState(0);
+  const [nameSearch, setNameSearch] = useState("");
+  const [newPerson, setNewPerson] = useState("");
 
   function activateLasers(){
     fetch("http:localhost:8080/transactions")
@@ -25,16 +27,16 @@ function App() {
         JSON.stringify(transactions);
       </p>
       console.log(JSON.stringify(transactions));
-    // fetch("http:localhost:8080/optimizedTransfers")
-    //   .then(res => res.json()) //synchronization
-    //   .then(json => {setOptimizedTransfers(json);}) 
-    //   console.log("testing - optimized transfers");
+    fetch("http:localhost:8080/optimizedTransfers")
+       .then(res => res.json()) //synchronization
+       .then(json => {setOptimizedTransfers(json);}) 
+       console.log("testing - optimized transfers");
       
-    //   // console.log("Addy has: " + transactions.Addy);
-    //   <p>
-    //     JSON.stringify(optimizedTransfers);
-    //   </p>
-    //   console.log(JSON.stringify(transactions));
+       // console.log("Addy has: " + transactions.Addy);
+       <p>
+         JSON.stringify(optimizedTransfers);
+       </p>
+       console.log(JSON.stringify(transactions));
   }
 
   function postTransaction(event) {
@@ -45,7 +47,32 @@ function App() {
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      "name": name
+      "name": name,
+      "amountPaid": amountPaid
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http:localhost:8080/transactions", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+      
+  }
+
+  function postNewPerson(event) {
+    event.preventDefault();
+   
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "newPerson": newPerson
     });
 
     var requestOptions = {
@@ -78,6 +105,24 @@ function App() {
       setAmountPaid(event.target.amountPaid);
   }
 
+  function handleNameChange2(event){
+    setNameSearch(event.target.nameSearch);
+  }
+
+  function handleNewPerson(event){
+    setNewPerson(event.target.value); //should i do .value??????
+  }
+
+  // i really don't think this would work but i put it here anyways
+  function findOptimizedTransfer(event){
+    transactions.map((transaction, i) => {
+        if (transaction.hasOwnProperty(nameSearch)) {
+          return (<p key={i}> {nameSearch} has: {JSON.stringify(optimizedTransfers.nameSearch)}</p>)
+        }
+        return <p key={i}>{JSON.stringify(optimizedTransfers)}</p>
+      })
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -93,6 +138,18 @@ function App() {
         - map() creates a new array from calling a function for every array event
         - ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
         */}
+
+        <form>
+          <label>
+            Add a person: 
+            <input 
+              type="text" 
+              name="name"  // do i need to change this? 
+              onChange={handleNewPerson}
+              />
+          </label>
+          <button onClick={postNewPerson}> Add </button>
+        </form>
 
         <form>
           <label>
@@ -114,19 +171,17 @@ function App() {
           <button onClick={postTransaction}> Post Transactions </button>
         </form>        
 
-        <text>
-          {/* Our name is: {name} */}
-          {/* Your most optimized transfer is: {optimizedTransfers} */}
-          Your most optimized transfer is: 
-        </text>
-        
-        <p> {transactions.map((transaction, i) => {
-          if (transaction.hasOwnProperty('Julia')) {
-            return (<p key={i}> Julia has: {JSON.stringify(transaction.Julia)}</p>)
-          }
-          return <p key={i}>{JSON.stringify(transaction)}</p>
-        })}
-        </p>
+        <form>
+          <label>
+            Get optimized transfer for: 
+            <input 
+              type="text" 
+              name="name" // do i need to change this? 
+              onChange={handleNameChange2}
+              />
+          </label>
+          <button onClick={findOptimizedTransfer}> Find </button>
+        </form>  
       
 
       </header>
