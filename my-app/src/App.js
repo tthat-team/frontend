@@ -11,18 +11,30 @@ function App() {
   // useState: enables you to add a state for function components
   const [transactions, setTransactions] = useState([]);
   const [name, setName] = useState("");
+  const [optimizedTrasfers, setOptimizedTransfers] = useState([]);
+  const [amountPaid, setAmountPaid] = useState(0);
 
   function activateLasers(){
     fetch("http:localhost:8080/transactions")
       .then(res => res.json()) //synchronization
       .then(json => {setTransactions(json);}) 
-      console.log("testing");
+      console.log("testing - set transactions");
       
       // console.log("Addy has: " + transactions.Addy);
       <p>
         JSON.stringify(transactions);
       </p>
-      console.log(JSON.stringify(transactions.Julia));
+      console.log(JSON.stringify(transactions));
+    // fetch("http:localhost:8080/optimizedTransfers")
+    //   .then(res => res.json()) //synchronization
+    //   .then(json => {setOptimizedTransfers(json);}) 
+    //   console.log("testing - optimized transfers");
+      
+    //   // console.log("Addy has: " + transactions.Addy);
+    //   <p>
+    //     JSON.stringify(optimizedTransfers);
+    //   </p>
+    //   console.log(JSON.stringify(transactions));
   }
 
   function postTransaction(event) {
@@ -62,14 +74,15 @@ function App() {
   }
 */
   function handleNameChange(event){
-      setName(event.target.value);
+      setName(event.target.name);
+      setAmountPaid(event.target.amountPaid);
   }
 
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          we are that team!!!
+          That Vacay!
         </p>
         
         <button onClick={activateLasers}>
@@ -84,13 +97,27 @@ function App() {
         <form>
           <label>
             Name:
-            <input type="text" name="name" onChange={handleNameChange}/>
+            <input 
+              type="text" 
+              name="name" 
+              onChange={handleNameChange}
+              />
+          </label>
+          <label>
+            Paid:
+            <input 
+              type="text" 
+              name="amountPaid" 
+              onChange={handleNameChange}
+              />
           </label>
           <button onClick={postTransaction}> Post Transactions </button>
-        </form>
+        </form>        
 
         <text>
-          Our name is: {name}
+          {/* Our name is: {name} */}
+          {/* Your most optimized transfer is: {optimizedTransfers} */}
+          Your most optimized transfer is: 
         </text>
         
         <p> {transactions.map((transaction, i) => {
