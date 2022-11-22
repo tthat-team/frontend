@@ -12,7 +12,7 @@ function App() {
   // useState: enables you to add a state for function components
   const [transactions, setTransactions] = useState([]);
   const [name, setName] = useState("");
-  const [optimizedTrasfers, setOptimizedTransfers] = useState([]);
+  const [optimizedTransfers, setOptimizedTransfers] = useState([]);
   const [amountPaid, setAmountPaid] = useState(0);
   const [nameSearch, setNameSearch] = useState("");
   const [newPerson, setNewPerson] = useState("");
@@ -64,17 +64,18 @@ function App() {
 
     var raw = JSON.stringify({
       "name": name,
-      "amountPaid": amountPaid
+      "amountPaid": amountPaid,
     });
 
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
       body: raw,
-      redirect: 'follow'
+      redirect: 'follow',
+      mode: 'no-cors'
     };
 
-    fetch("http:localhost:8080/transactions", requestOptions)
+    fetch("http://localhost:8080/transactions", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -99,10 +100,11 @@ function App() {
       method: 'POST',
       headers: myHeaders,
       body: raw,
-      redirect: 'follow'
+      redirect: 'follow',
+      mode: 'no-cors'
     };
 
-    fetch("http:localhost:8080/transfers", requestOptions)
+    fetch("http://localhost:8080/transfers", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -128,7 +130,7 @@ function App() {
       redirect: 'follow'
     };
 
-    fetch("http:localhost:8080/transactions", requestOptions)
+    fetch("http://localhost:8080/transactions", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
