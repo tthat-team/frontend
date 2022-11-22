@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 function App() {
 
-  // Hook: 
+  // Hook:
   // Declare a new state variable, which we'll call "transactions".
   // We are setting count as an empty array, []. There is an equivalent class example of this with a constructor.
   // useState: enables you to add a state for function components
@@ -16,34 +16,49 @@ function App() {
   const [amountPaid, setAmountPaid] = useState(0);
   const [nameSearch, setNameSearch] = useState("");
   const [newPerson, setNewPerson] = useState("");
+  const [transferFrom, setTransferFrom] = useState("");
+  const [transferTo, setTransferTo] = useState("");
+  const [transferAmount, setTransferAmount] = useState(0);
 
-  function activateLasers(){
-    fetch("http://localhost:8080/transactions")
-      .then(res => res.json()) //synchronization
-      .then(json => {setTransactions(json);}) 
-      console.log("testing - set transactions");
-      
-      // console.log("Addy has: " + transactions.Addy);
-      <p>
-        JSON.stringify(transactions);
-      </p>
-      console.log(JSON.stringify(transactions));
-    fetch("http://localhost:8080/optimizedroutes")
-       .then(res => res.json()) //synchronization
-       .then(json => {setOptimizedTransfers(json);}) 
-       console.log("testing - optimized transfers");
-      
-       // console.log("Addy has: " + transactions.Addy);
-       <p>
-         JSON.stringify(optimizedTransfers);
-       </p>
-       console.log(JSON.stringify(transactions));
-  }
 
+// FETCHING
+
+  // (activeLasers) gets transactions and optimized routes from backend.
+  // in actuality, we should trigger 'fetch transactions' on the 'see all transactions' button
+  // function activateLasers(){
+  //   {/* move fetch transactions into 'see all transactions' or whatever i name it. */}
+  //   fetch("http://localhost:8080/transactions")
+  //     .then(res => res.json()) //synchronization
+  //     .then(json => {setTransactions(json);})
+  //     console.log("testing - set transactions");
+
+  //     // console.log("Addy has: " + transactions.Addy);
+  //     <p>
+  //       JSON.stringify(transactions);
+  //     </p>
+  //     console.log(JSON.stringify(transactions));
+
+  //   {/* this belongs here*/}
+  //   fetch("http://localhost:8080/optimizedroutes")
+  //      .then(res => res.json()) //synchronization
+  //      .then(json => {setOptimizedTransfers(json);})
+  //      console.log("testing - optimized transfers");
+
+  //      // console.log("Addy has: " + transactions.Addy);
+  //      <p>
+  //        JSON.stringify(optimizedTransfers);
+  //      </p>
+  //      console.log(JSON.stringify(transactions));
+  // }
+
+// POSTING
+
+  // (postTransaction) gives a single transaction to the backend
+  // name (payer name) amountPaid (to be split) -> [backend]
   function postTransaction(event) {
     // read from the text box, then post as a transaction
     event.preventDefault();
-   
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -63,20 +78,21 @@ function App() {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
-      
   }
 
+  // (postTransfer) gives a single transfer to the backend
+  // transferFrom (debitor) transferTo (creditor) transferAmount -> [backend]
   function postTransfer(event) {
     // read from the text box, then post as a transaction
     event.preventDefault();
-   
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      "from": from,
-      "to": to,
-      "amountTransferred": amountTransferred
+      "transferFrom": transferFrom,
+      "transferTo": transferTo,
+      "transferAmount": transferAmount
     });
 
     var requestOptions = {
@@ -90,12 +106,14 @@ function App() {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
-      
+
   }
 
+  // (postNewPerson) gives a single name to the backend (i.e. the new person)
+  // newPerson -> [backend]
   function postNewPerson(event) {
     event.preventDefault();
-   
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -114,22 +132,18 @@ function App() {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
-      
-  }
-/*
-  function showAllTransactions() {
-    var component = <p></p>
-    for (const transaction in transactions) {
-      component = <p>
-        {component}
-        {JSON.stringify(transactions[transaction])}
-      </p>
-    }
-    return Component;
-  }
-*/
 
-// HANDLE TRANSACTIONS
+  }
+
+
+// HANDLING CHANGES
+
+  // HANDLE: new person
+  function handleNewPersonChange(event){
+    setNewPerson(event.target.value);
+  }
+
+  // HANDLE: transaction
   function handleNameChange(event){
       setName(event.target.value);
   }
@@ -138,7 +152,7 @@ function App() {
     setAmountPaid(event.target.value);
 }
 
-// HANDLE TRANSFERS
+// HANDLE: transfers
   function handleTransferFromChange(event){
     setTransferFrom(event.target.value);
   }
@@ -156,18 +170,49 @@ function App() {
     setNameSearch(event.target.value);
   }
 
-  function handleNewPerson(event){
-    setNewPerson(event.target.value); 
-  }
+  //- map() creates a new array from calling a function for every array event
+  //- ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
+  function fetchOptimizedTransfer(event){
+    fetch("http://localhost:8080/optimizedroutes") // NOT SURE IF i can put fetch back to back.
+       .then(res => res.json()) //synchronization
+       .then(json => {setOptimizedTransfers(json);})
+       console.log("testing - optimized transfers");
 
-  // i really don't think this would work but i put it here anyways
-  function findOptimizedTransfer(event){
+       // console.log("Addy has: " + transactions.Addy);
+       <p>
+         JSON.stringify(optimizedTransfers);
+       </p>
+       console.log(JSON.stringify(transactions));
+
     transactions.map((transaction, i) => {
         if (transaction.hasOwnProperty(nameSearch)) {
           return (<p key={i}> {nameSearch} has: {JSON.stringify(optimizedTransfers.nameSearch)}</p>)
         }
         return <p key={i}>{JSON.stringify(optimizedTransfers)}</p>
       })
+  }
+
+  // what is this ???
+  function showAllTransactions() {
+    fetch("http://localhost:8080/transactions") // NOT SURE IF i can put fetch back to back.
+      .then(res => res.json()) //synchronization
+      .then(json => {setTransactions(json);})
+      console.log("testing - set transactions");
+
+      // console.log("Addy has: " + transactions.Addy);
+      <p>
+        JSON.stringify(transactions);
+      </p>
+      console.log(JSON.stringify(transactions));
+
+    var component = <p></p>
+    for (const transaction in transactions) {
+      component = <p>
+        {component}
+        {JSON.stringify(transactions[transaction])}
+      </p>
+    }
+    return Component;
   }
 
   return (
@@ -179,24 +224,18 @@ function App() {
         }>
           That Vacay!
         </p>
-        
-        <Button variant="primary" onClick={activateLasers}>
-          Activate Lasers
-        </Button>
 
-        {/* 
-        - map() creates a new array from calling a function for every array event
-        - ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
-        */}
+        {/* <Button variant="primary" onClick={activateLasers}>
+          Activate Lasers
+        </Button> */}
 
         <form>
           <label>
-            Add a person: 
-            <input 
-              type="text" 
-              name="name"  // do i need to change this? 
-              onChange={handleNewPerson}
-              />
+            Add a person:
+            <input
+              type="text"
+              name="name"  // do i need to change this?
+              onChange={handleNewPersonChange}              />
           </label>
           <Button onClick={postNewPerson}> Add </Button>
         </form>
@@ -208,21 +247,21 @@ function App() {
         <form>
           <label>
             Name:
-            <input 
-              type="text" 
-              name="name" 
+            <input
+              type="text"
+              name="name"
               onChange={handleNameChange}
               />
           </label>
           <label>
             Paid:
-            <input 
-              type="text" 
-              name="amountPaid" 
+            <input
+              type="text"
+              name="amountPaid"
               onChange={handleAmountPaidChange}
               />
           </label>
-          <Button onClick={postTransaction}> Post Transactions </Button>
+          <Button onClick={postTransaction}> Post Transaction </Button>
         </form>
 
         <p>
@@ -232,43 +271,48 @@ function App() {
         <form>
           <label>
             From:
-            <input 
-              type="text" 
-              name="from" 
+            <input
+              type="text"
+              name="from"
               onChange={handleTransferFromChange}
               />
           </label>
           <label>
             To:
-            <input 
-              type="text" 
-              name="to" 
+            <input
+              type="text"
+              name="to"
               onChange={handleTransferToChange}
               />
           </label>
           <label>
             Amount transferred:
-            <input 
-              type="text" 
-              name="amountTransferred" 
+            <input
+              type="text"
+              name="amountTransferred"
               onChange={handleTransferAmountChange}
               />
           </label>
           <Button onClick={postTransfer}> Post Transfer </Button>
-        </form>      
-                
+        </form>
+
 
         <form>
           <label>
-            Get optimized transfer for: 
-            <input 
-              type="text" 
-              name="name" // do i need to change this? 
+            Get optimized transfer for:
+            <input
+              type="text"
+              name="name" // do i need to change this?
               onChange={handleOptimizedChange}
               />
           </label>
-          <Button onClick={findOptimizedTransfer}> Find </Button>
-        </form>  
+          <Button onClick={fetchOptimizedTransfer}> Find </Button>
+        </form>
+
+        <Button variant="primary" onClick={showAllTransactions}>
+          See Transaction History
+        </Button>
+
       </header>
     </div>
   );
