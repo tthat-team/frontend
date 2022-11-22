@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Component, useState} from 'react';
 import React from 'react';
+import { Button } from 'react-bootstrap';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
   const [newPerson, setNewPerson] = useState("");
 
   function activateLasers(){
-    fetch("http:localhost:8080/transactions")
+    fetch("http://localhost:8080/transactions")
       .then(res => res.json()) //synchronization
       .then(json => {setTransactions(json);}) 
       console.log("testing - set transactions");
@@ -27,7 +28,7 @@ function App() {
         JSON.stringify(transactions);
       </p>
       console.log(JSON.stringify(transactions));
-    fetch("http:localhost:8080/optimizedTransfers")
+    fetch("http://localhost:8080/optimizedroutes")
        .then(res => res.json()) //synchronization
        .then(json => {setOptimizedTransfers(json);}) 
        console.log("testing - optimized transfers");
@@ -59,6 +60,33 @@ function App() {
     };
 
     fetch("http:localhost:8080/transactions", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+      
+  }
+
+  function postTransfer(event) {
+    // read from the text box, then post as a transaction
+    event.preventDefault();
+   
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "from": from,
+      "to": to,
+      "amountTransferred": amountTransferred
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http:localhost:8080/transfers", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -100,17 +128,36 @@ function App() {
     return Component;
   }
 */
+
+// HANDLE TRANSACTIONS
   function handleNameChange(event){
-      setName(event.target.name);
-      setAmountPaid(event.target.amountPaid);
+      setName(event.target.value);
   }
 
-  function handleNameChange2(event){
-    setNameSearch(event.target.nameSearch);
+  function handleAmountPaidChange(event){
+    setAmountPaid(event.target.value);
+}
+
+// HANDLE TRANSFERS
+  function handleTransferFromChange(event){
+    setTransferFrom(event.target.value);
+  }
+
+  function handleTransferToChange(event){
+    setTransferTo(event.target.value);
+  }
+
+  function handleTransferAmountChange(event){
+    setTransferAmount(event.target.value);
+  }
+
+  // HANDLE OPTIMIZATION
+  function handleOptimizedChange(event){
+    setNameSearch(event.target.value);
   }
 
   function handleNewPerson(event){
-    setNewPerson(event.target.value); //should i do .value??????
+    setNewPerson(event.target.value); 
   }
 
   // i really don't think this would work but i put it here anyways
@@ -126,13 +173,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
+        <p style = {{
+          fontSize: 100,
+        }
+        }>
           That Vacay!
         </p>
         
-        <button onClick={activateLasers}>
+        <Button variant="primary" onClick={activateLasers}>
           Activate Lasers
-        </button>
+        </Button>
 
         {/* 
         - map() creates a new array from calling a function for every array event
@@ -148,8 +198,12 @@ function App() {
               onChange={handleNewPerson}
               />
           </label>
-          <button onClick={postNewPerson}> Add </button>
+          <Button onClick={postNewPerson}> Add </Button>
         </form>
+
+        <p>
+          Split a cost:
+        </p>
 
         <form>
           <label>
@@ -165,11 +219,44 @@ function App() {
             <input 
               type="text" 
               name="amountPaid" 
-              onChange={handleNameChange}
+              onChange={handleAmountPaidChange}
               />
           </label>
-          <button onClick={postTransaction}> Post Transactions </button>
-        </form>        
+          <Button onClick={postTransaction}> Post Transactions </Button>
+        </form>
+
+        <p>
+          Record a transfer:
+        </p>
+
+        <form>
+          <label>
+            From:
+            <input 
+              type="text" 
+              name="from" 
+              onChange={handleTransferFromChange}
+              />
+          </label>
+          <label>
+            To:
+            <input 
+              type="text" 
+              name="to" 
+              onChange={handleTransferToChange}
+              />
+          </label>
+          <label>
+            Amount transferred:
+            <input 
+              type="text" 
+              name="amountTransferred" 
+              onChange={handleTransferAmountChange}
+              />
+          </label>
+          <Button onClick={postTransfer}> Post Transfer </Button>
+        </form>      
+                
 
         <form>
           <label>
@@ -177,17 +264,14 @@ function App() {
             <input 
               type="text" 
               name="name" // do i need to change this? 
-              onChange={handleNameChange2}
+              onChange={handleOptimizedChange}
               />
           </label>
-          <button onClick={findOptimizedTransfer}> Find </button>
+          <Button onClick={findOptimizedTransfer}> Find </Button>
         </form>  
-      
-
       </header>
     </div>
   );
-  
 }
 
 export default App;
