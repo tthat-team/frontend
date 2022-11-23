@@ -13,6 +13,7 @@ function App() {
   const [transactions, setTransactions] = useState([]);
   // I don't need to set state for spending
   const [balances, setBalances] = useState([]);
+  const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [optimizedTransfers, setOptimizedTransfers] = useState([]);
   const [amountPaid, setAmountPaid] = useState(0);
@@ -77,7 +78,7 @@ function App() {
       mode: 'no-cors'
     };
 
-    fetch("http://localhost:8080/spendings", requestOptions)
+    fetch("http://localhost:8080/users", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -122,7 +123,7 @@ function App() {
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      "newPerson": newPerson
+      "Name": newPerson
     });
 
     var requestOptions = {
@@ -132,7 +133,7 @@ function App() {
       redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/spendings", requestOptions)
+    fetch("http://localhost:8080/users", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -234,8 +235,43 @@ function App() {
         {JSON.stringify(balances[balance])}
       </p>
     }
-    return Component; 
+    return Component;
   }
+
+  function showPeople() {
+
+    fetch("http://localhost:8080/users") // NOT SURE IF i can put fetch back to back.
+      .then(res => res.json()) //synchronization
+      .then(json => {setUsers(json);})
+
+      console.log("testing - set users");
+      //var component = <p> {JSON.stringify(users)}</p>
+    var component = <p></p>
+    for (let i = 0; i < users.length; i++) {
+      //  component = <p>
+      //    {component.concat(JSON.stringify(users[i])) 
+      //    }
+      //  </p>
+      component =+ JSON.stringify(users[i])
+    }
+    console.log(users.length);
+    console.log(users[0]);
+    console.log(component);
+  //   for (const user in users) {
+  //     component = <p>
+  //       {component}
+  //       {JSON.stringify(users[user])}
+  //     </p>
+  //  }
+
+    return component;
+  }
+
+  function test() {
+     var test = <p> this is a test </p>
+
+     return test;
+   }
 
   return (
     <div className="App">
@@ -332,6 +368,17 @@ function App() {
           Balances:
           {showBalances}
         </p>
+
+        <p>
+          People:
+          {/* {test} */}
+          {/* {showPeople} */}
+        </p>
+
+        <Button variant="primary" onClick={showPeople}>
+          See People
+        </Button>
+
 
         {/* <form>
           <label>
