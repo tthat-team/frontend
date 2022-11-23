@@ -65,9 +65,10 @@ function App() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
+    console.log(name);
     var raw = JSON.stringify({
       "Name": name,
-      "Amount": amountPaid,
+      "Amount": amountPaid
     });
 
     var requestOptions = {
@@ -78,7 +79,7 @@ function App() {
       mode: 'no-cors'
     };
 
-    fetch("http://localhost:8080/users", requestOptions)
+    fetch("http://localhost:8080/spendings", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -240,35 +241,38 @@ function App() {
 
   function showPeople() {
 
-    fetch("http://localhost:8080/users") // NOT SURE IF i can put fetch back to back.
+    fetch("http://localhost:8080/users") 
       .then(res => res.json()) //synchronization
       .then(json => {setUsers(json);})
 
       console.log("testing - set users");
       //var component = <p> {JSON.stringify(users)}</p>
     var component = <p></p>
-    for (let i = 0; i < users.length; i++) {
-      //  component = <p>
-      //    {component.concat(JSON.stringify(users[i])) 
-      //    }
-      //  </p>
-      component =+ JSON.stringify(users[i])
-    }
+    // for (let i = 0; i < users.length; i++) {
+    //     component = <p>
+    //       {component}
+    //       {JSON.stringify(users[i])}
+    //     </p>
+    // }
+    for (const user in users) {
+      component = <p>
+        {component}
+        {JSON.stringify(users[user])}
+      </p>
+   }
+    
     console.log(users.length);
     console.log(users[0]);
+    console.log(users);
     console.log(component);
-  //   for (const user in users) {
-  //     component = <p>
-  //       {component}
-  //       {JSON.stringify(users[user])}
-  //     </p>
-  //  }
+     
 
     return component;
+    //return Component;
   }
 
   function test() {
-     var test = <p> this is a test </p>
+     var test = <p>this is a test</p>
 
      return test;
    }
@@ -371,13 +375,13 @@ function App() {
 
         <p>
           People:
-          {/* {test} */}
-          {/* {showPeople} */}
+          {/* {test()} */}
+          {showPeople()}
         </p>
 
-        <Button variant="primary" onClick={showPeople}>
-          See People
-        </Button>
+        {/* <Button variant="primary" onClick={showPeople}>
+          Show People
+        </Button> */}
 
 
         {/* <form>
