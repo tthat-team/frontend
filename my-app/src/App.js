@@ -7,10 +7,11 @@ import { Button } from 'react-bootstrap';
 function App() {
 
   // Hook:
-  // Declare a new state variable, which we'll call "transactions".
+  // Declare a new state variable, which we'll call "spending".
   // We are setting count as an empty array, []. There is an equivalent class example of this with a constructor.
   // useState: enables you to add a state for function components
   const [transactions, setTransactions] = useState([]);
+  // I don't need to set state for spending
   const [name, setName] = useState("");
   const [optimizedTransfers, setOptimizedTransfers] = useState([]);
   const [amountPaid, setAmountPaid] = useState(0);
@@ -53,18 +54,18 @@ function App() {
 
 // POSTING
 
-  // (postTransaction) gives a single transaction to the backend
+  // (postSpending) gives a single spending to the backend
   // name (payer name) amountPaid (to be split) -> [backend]
-  function postTransaction(event) {
-    // read from the text box, then post as a transaction
+  function postSpending(event) {
+    // read from the text box, then post as a spending
     event.preventDefault();
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      "name": name,
-      "amountPaid": amountPaid,
+      "Name": name,
+      "Amount": amountPaid,
     });
 
     var requestOptions = {
@@ -75,7 +76,7 @@ function App() {
       mode: 'no-cors'
     };
 
-    fetch("http://localhost:8080/transactions", requestOptions)
+    fetch("http://localhost:8080/spendings", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -91,9 +92,9 @@ function App() {
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-      "transferFrom": transferFrom,
-      "transferTo": transferTo,
-      "transferAmount": transferAmount
+      "From": transferFrom,
+      "To": transferTo,
+      "Amount": transferAmount
     });
 
     var requestOptions = {
@@ -130,7 +131,7 @@ function App() {
       redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/transactions", requestOptions)
+    fetch("http://localhost:8080/spendings", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -145,9 +146,9 @@ function App() {
     setNewPerson(event.target.value);
   }
 
-  // HANDLE: transaction
+  // HANDLE: spending
   function handleNameChange(event){
-      setName(event.target.value);
+    setName(event.target.value);
   }
 
   function handleAmountPaidChange(event){
@@ -174,7 +175,7 @@ function App() {
 
   //- map() creates a new array from calling a function for every array event
   //- ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
-  function fetchOptimizedTransfer(event){
+  function showOptimizedTransfer(event){
     fetch("http://localhost:8080/optimizedroutes") // NOT SURE IF i can put fetch back to back.
        .then(res => res.json()) //synchronization
        .then(json => {setOptimizedTransfers(json);})
@@ -184,14 +185,16 @@ function App() {
        <p>
          JSON.stringify(optimizedTransfers);
        </p>
-       console.log(JSON.stringify(transactions));
+       //console.log(JSON.stringify(transactions));
 
-    transactions.map((transaction, i) => {
-        if (transaction.hasOwnProperty(nameSearch)) {
-          return (<p key={i}> {nameSearch} has: {JSON.stringify(optimizedTransfers.nameSearch)}</p>)
-        }
-        return <p key={i}>{JSON.stringify(optimizedTransfers)}</p>
-      })
+    return (<p>JSON.stringify(optimizedTransfers)</p>)
+
+    // transfers.map((transfer, i) => {
+    //     if (transfer.hasOwnProperty(nameSearch)) {
+    //       return (<p key={i}> {nameSearch} has: {JSON.stringify(optimizedTransfers.nameSearch)}</p>)
+    //     }
+    //     return <p key={i}>{JSON.stringify(optimizedTransfers)}</p>
+    //   })
   }
 
   // what is this ???
@@ -231,7 +234,7 @@ function App() {
           Activate Lasers
         </Button> */}
 
-        <form>
+        {/* <form>
           <label>
             Add a person:
             <input
@@ -240,7 +243,7 @@ function App() {
               onChange={handleNewPersonChange}              />
           </label>
           <Button onClick={postNewPerson}> Add </Button>
-        </form>
+        </form> */}
 
         <p>
           Split a cost:
@@ -263,7 +266,7 @@ function App() {
               onChange={handleAmountPaidChange}
               />
           </label>
-          <Button onClick={postTransaction}> Post Transaction </Button>
+          <Button onClick={postSpending}> Post Spending </Button>
         </form>
 
         <p>
@@ -298,8 +301,17 @@ function App() {
           <Button onClick={postTransfer}> Post Transfer </Button>
         </form>
 
+        <p>
+          Transaction History:
+          {showAllTransactions}
+        </p>
 
-        <form>
+        <p>
+          Optimized Transfer Routes:
+          {showOptimizedTransfer}
+        </p>
+
+        {/* <form>
           <label>
             Get optimized transfer for:
             <input
@@ -308,12 +320,12 @@ function App() {
               onChange={handleOptimizedChange}
               />
           </label>
-          <Button onClick={fetchOptimizedTransfer}> Find </Button>
-        </form>
+          <Button onClick={showOptimizedTransfer}> Find </Button>
+        </form> */}
 
-        <Button variant="primary" onClick={showAllTransactions}>
+        {/* <Button variant="primary" onClick={showAllTransactions}>
           See Transaction History
-        </Button>
+        </Button> */}
 
       </header>
     </div>
