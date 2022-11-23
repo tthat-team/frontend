@@ -12,6 +12,7 @@ function App() {
   // useState: enables you to add a state for function components
   const [transactions, setTransactions] = useState([]);
   // I don't need to set state for spending
+  const [balances, setBalances] = useState([]);
   const [name, setName] = useState("");
   const [optimizedTransfers, setOptimizedTransfers] = useState([]);
   const [amountPaid, setAmountPaid] = useState(0);
@@ -220,6 +221,22 @@ function App() {
     return Component;
   }
 
+  function showBalances() {
+    fetch("http://localhost:8080/balances") // NOT SURE IF i can put fetch back to back.
+      .then(res => res.json()) //synchronization
+      .then(json => {setBalances(json);})
+      console.log("testing - set balances");
+
+    var component = <p></p>
+    for (const balance in balances) {
+      component = <p>
+        {component}
+        {JSON.stringify(balances[balance])}
+      </p>
+    }
+    return Component; 
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -234,7 +251,7 @@ function App() {
           Activate Lasers
         </Button> */}
 
-        {/* <form>
+        <form>
           <label>
             Add a person:
             <input
@@ -243,7 +260,7 @@ function App() {
               onChange={handleNewPersonChange}              />
           </label>
           <Button onClick={postNewPerson}> Add </Button>
-        </form> */}
+        </form>
 
         <p>
           Split a cost:
@@ -309,6 +326,11 @@ function App() {
         <p>
           Optimized Transfer Routes:
           {showOptimizedTransfer}
+        </p>
+
+        <p>
+          Balances:
+          {showBalances}
         </p>
 
         {/* <form>
