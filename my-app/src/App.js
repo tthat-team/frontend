@@ -183,12 +183,12 @@ function App() {
        console.log("testing - optimized transfers");
 
        // console.log("Addy has: " + transactions.Addy);
-       <p>
-         JSON.stringify(optimizedTransfers);
-       </p>
+      //  <p>
+      //    JSON.stringify(optimizedTransfers);
+      //  </p>
        //console.log(JSON.stringify(transactions));
 
-    return (<p>JSON.stringify(optimizedTransfers)</p>)
+    return (JSON.stringify(optimizedTransfers))
 
     // transfers.map((transfer, i) => {
     //     if (transfer.hasOwnProperty(nameSearch)) {
