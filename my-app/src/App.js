@@ -104,7 +104,6 @@ function App() {
       headers: myHeaders,
       body: raw,
       redirect: 'follow',
-      mode: 'no-cors'
     };
 
     fetch("http://localhost:8080/transfers", requestOptions)
