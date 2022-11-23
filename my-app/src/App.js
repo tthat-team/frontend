@@ -358,12 +358,12 @@ function App() {
 
         <p>
           Optimized Transfer Routes:
-          {showOptimizedTransfer}
+          {showOptimizedTransfer()}
         </p>
 
         <p>
           Balances:
-          {showBalances}
+          {showBalances()}
         </p>
 
         <p>
