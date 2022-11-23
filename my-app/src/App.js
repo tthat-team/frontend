@@ -65,7 +65,6 @@ function App() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    console.log(name);
     var raw = JSON.stringify({
       "Name": name,
       "Amount": amountPaid
@@ -76,7 +75,7 @@ function App() {
       headers: myHeaders,
       body: raw,
       redirect: 'follow',
-      mode: 'no-cors'
+      //mode: 'no-cors'
     };
 
     fetch("http://localhost:8080/spendings", requestOptions)
@@ -207,11 +206,11 @@ function App() {
       .then(json => {setTransactions(json);})
       console.log("testing - set transactions");
 
-      // console.log("Addy has: " + transactions.Addy);
-      <p>
-        JSON.stringify(transactions);
-      </p>
-      console.log(JSON.stringify(transactions));
+      // // console.log("Addy has: " + transactions.Addy);
+      // <p>
+      //   JSON.stringify(transactions);
+      // </p>
+      // console.log(JSON.stringify(transactions));
 
     var component = <p></p>
     for (const transaction in transactions) {
@@ -220,7 +219,7 @@ function App() {
         {JSON.stringify(transactions[transaction])}
       </p>
     }
-    return Component;
+    return component;
   }
 
   function showBalances() {
@@ -241,7 +240,7 @@ function App() {
 
   function showPeople() {
 
-    fetch("http://localhost:8080/users") 
+    fetch("http://localhost:8080/users")
       .then(res => res.json()) //synchronization
       .then(json => {setUsers(json);})
 
@@ -260,12 +259,6 @@ function App() {
         {JSON.stringify(users[user])}
       </p>
    }
-    
-    console.log(users.length);
-    console.log(users[0]);
-    console.log(users);
-    console.log(component);
-     
 
     return component;
     //return Component;
@@ -297,7 +290,8 @@ function App() {
             <input
               type="text"
               name="name"  // do i need to change this?
-              onChange={handleNewPersonChange}              />
+              onChange={handleNewPersonChange}
+              />
           </label>
           <Button onClick={postNewPerson}> Add </Button>
         </form>
@@ -360,7 +354,7 @@ function App() {
 
         <p>
           Transaction History:
-          {showAllTransactions}
+          {showAllTransactions()}
         </p>
 
         <p>
