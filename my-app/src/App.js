@@ -3,6 +3,7 @@ import './App.css';
 import {Component, useState} from 'react';
 import React from 'react';
 import { Button } from 'react-bootstrap';
+// import background from "./img/petals.png";
 
 function App() {
 
@@ -104,6 +105,7 @@ function App() {
       headers: myHeaders,
       body: raw,
       redirect: 'follow',
+      mode: 'no-cors'
     };
 
     fetch("http://localhost:8080/transfers", requestOptions)
@@ -183,12 +185,12 @@ function App() {
        console.log("testing - optimized transfers");
 
        // console.log("Addy has: " + transactions.Addy);
-      //  <p>
-      //    JSON.stringify(optimizedTransfers);
-      //  </p>
+       <p>
+         JSON.stringify(optimizedTransfers);
+       </p>
        //console.log(JSON.stringify(transactions));
 
-    return (JSON.stringify(optimizedTransfers))
+    return (<p>JSON.stringify(optimizedTransfers)</p>)
 
     // transfers.map((transfer, i) => {
     //     if (transfer.hasOwnProperty(nameSearch)) {
@@ -272,20 +274,21 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p style = {{
-          fontSize: 100,
-        }
-        }>
+        <p className="titleText">
           That Vacay!
         </p>
 
         {/* <Button variant="primary" onClick={activateLasers}>
           Activate Lasers
         </Button> */}
+        
+        <p className="functionHeader">
+          Add a Person:
+        </p>
 
         <form>
-          <label>
-            Add a person:
+          <label className="bodyText">
+            Name:  
             <input
               type="text"
               name="name"  // do i need to change this?
@@ -295,12 +298,12 @@ function App() {
           <Button onClick={postNewPerson}> Add </Button>
         </form>
 
-        <p>
+        <p className="functionHeader">
           Split a cost:
         </p>
 
         <form>
-          <label>
+          <label className="bodyText">
             Name:
             <input
               type="text"
@@ -308,7 +311,7 @@ function App() {
               onChange={handleNameChange}
               />
           </label>
-          <label>
+          <label className="bodyText">
             Paid:
             <input
               type="text"
@@ -319,12 +322,12 @@ function App() {
           <Button onClick={postSpending}> Post Spending </Button>
         </form>
 
-        <p>
+        <p className="functionHeader">
           Record a transfer:
         </p>
 
         <form>
-          <label>
+          <label className="bodyText">
             From:
             <input
               type="text"
@@ -332,7 +335,7 @@ function App() {
               onChange={handleTransferFromChange}
               />
           </label>
-          <label>
+          <label className="bodyText">
             To:
             <input
               type="text"
@@ -340,7 +343,7 @@ function App() {
               onChange={handleTransferToChange}
               />
           </label>
-          <label>
+          <label className="bodyText">
             Amount transferred:
             <input
               type="text"
@@ -358,12 +361,12 @@ function App() {
 
         <p>
           Optimized Transfer Routes:
-          {showOptimizedTransfer()}
+          {showOptimizedTransfer}
         </p>
 
         <p>
           Balances:
-          {showBalances()}
+          {showBalances}
         </p>
 
         <p>
@@ -378,7 +381,7 @@ function App() {
 
 
         {/* <form>
-          <label>
+          <label className="bodyText">
             Get optimized transfer for:
             <input
               type="text"
@@ -396,6 +399,13 @@ function App() {
       </header>
     </div>
   );
+
+  // return (
+  //   <div style={{ backgroundImage: `url(${background})` }}>
+  //     Hello World
+  //   </div>
+  // );
+  
 }
 
 export default App;
