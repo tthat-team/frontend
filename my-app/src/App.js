@@ -23,6 +23,10 @@ function App() {
   const [transferFrom, setTransferFrom] = useState("");
   const [transferTo, setTransferTo] = useState("");
   const [transferAmount, setTransferAmount] = useState(0);
+  const [userFlag, setUserFlag] = useState(false);
+  const [transactionFlag, setTransactionFlag] = useState(false);
+  const [balanceFlag, setBalanceFlag] = useState(false);
+  const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
 
 // FETCHING
@@ -83,6 +87,10 @@ function App() {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+    setBalanceFlag(false);
+    setTransactionFlag(false);
+    setOptimizedTransfersFlag(false);
   }
 
   // (postTransfer) gives a single transfer to the backend
@@ -105,13 +113,16 @@ function App() {
       headers: myHeaders,
       body: raw,
       redirect: 'follow',
-      mode: 'no-cors'
     };
 
     fetch("http://localhost:8080/transfers", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+    setBalanceFlag(false);
+    setTransactionFlag(false);
+    setOptimizedTransfersFlag(false);
 
   }
 
@@ -138,6 +149,9 @@ function App() {
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
+
+    setUserFlag(false);
+    setBalanceFlag(false);
 
   }
 
@@ -179,18 +193,18 @@ function App() {
   //- map() creates a new array from calling a function for every array event
   //- ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
   function showOptimizedTransfer(event){
-    fetch("http://localhost:8080/optimizedroutes") // NOT SURE IF i can put fetch back to back.
+    if (!optimizedTransfersFlag) {
+      fetch("http://localhost:8080/optimizedroutes") // NOT SURE IF i can put fetch back to back.
        .then(res => res.json()) //synchronization
        .then(json => {setOptimizedTransfers(json);})
        console.log("testing - optimized transfers");
 
+      setOptimizedTransfersFlag(true);
+    }
        // console.log("Addy has: " + transactions.Addy);
-       <p>
-         JSON.stringify(optimizedTransfers);
-       </p>
        //console.log(JSON.stringify(transactions));
 
-    return (<p>JSON.stringify(optimizedTransfers)</p>)
+    return (<p>{JSON.stringify(optimizedTransfers)}</p>)
 
     // transfers.map((transfer, i) => {
     //     if (transfer.hasOwnProperty(nameSearch)) {
@@ -202,10 +216,13 @@ function App() {
 
   // what is this ???
   function showAllTransactions() {
-    fetch("http://localhost:8080/transactions") // NOT SURE IF i can put fetch back to back.
-      .then(res => res.json()) //synchronization
-      .then(json => {setTransactions(json);})
-      console.log("testing - set transactions");
+    if (!transactionFlag) {
+      fetch("http://localhost:8080/transactions") // NOT SURE IF i can put fetch back to back.
+        .then(res => res.json()) //synchronization
+        .then(json => {setTransactions(json);})
+        console.log("testing - set transactions");
+      setTransactionFlag(true);
+    }
 
       // // console.log("Addy has: " + transactions.Addy);
       // <p>
@@ -224,10 +241,14 @@ function App() {
   }
 
   function showBalances() {
-    fetch("http://localhost:8080/balances") // NOT SURE IF i can put fetch back to back.
-      .then(res => res.json()) //synchronization
-      .then(json => {setBalances(json);})
+    if (!balanceFlag) {
+      fetch("http://localhost:8080/balances") // NOT SURE IF i can put fetch back to back.
+        .then(res => res.json()) //synchronization
+        .then(json => {setBalances(json);})
       console.log("testing - set balances");
+
+      setBalanceFlag(true);
+    }
 
     var component = <p></p>
     for (const balance in balances) {
@@ -236,15 +257,17 @@ function App() {
         {JSON.stringify(balances[balance])}
       </p>
     }
-    return Component;
+    return component;
   }
 
   function showPeople() {
 
-    fetch("http://localhost:8080/users")
-      .then(res => res.json()) //synchronization
-      .then(json => {setUsers(json);})
-
+    if (!userFlag) {
+      fetch("http://localhost:8080/users")
+        .then(res => res.json()) //synchronization
+        .then(json => {setUsers(json);})
+      setUserFlag(true);
+    }
       console.log("testing - set users");
       //var component = <p> {JSON.stringify(users)}</p>
     var component = <p></p>
@@ -361,12 +384,12 @@ function App() {
 
         <p>
           Optimized Transfer Routes:
-          {showOptimizedTransfer}
+          {showOptimizedTransfer()}
         </p>
 
         <p>
           Balances:
-          {showBalances}
+          {showBalances()}
         </p>
 
         <p>
