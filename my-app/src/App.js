@@ -12,7 +12,6 @@ function App() {
   // We are setting count as an empty array, []. There is an equivalent class example of this with a constructor.
   // useState: enables you to add a state for function components
   const [transactions, setTransactions] = useState([]);
-  // I don't need to set state for spending
   const [balances, setBalances] = useState([]);
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
@@ -29,42 +28,12 @@ function App() {
   const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
 
-// FETCHING
-
-  // (activeLasers) gets transactions and optimized routes from backend.
-  // in actuality, we should trigger 'fetch transactions' on the 'see all transactions' button
-  // function activateLasers(){
-  //   {/* move fetch transactions into 'see all transactions' or whatever i name it. */}
-  //   fetch("http://localhost:8080/transactions")
-  //     .then(res => res.json()) //synchronization
-  //     .then(json => {setTransactions(json);})
-  //     console.log("testing - set transactions");
-
-  //     // console.log("Addy has: " + transactions.Addy);
-  //     <p>
-  //       JSON.stringify(transactions);
-  //     </p>
-  //     console.log(JSON.stringify(transactions));
-
-  //   {/* this belongs here*/}
-  //   fetch("http://localhost:8080/optimizedroutes")
-  //      .then(res => res.json()) //synchronization
-  //      .then(json => {setOptimizedTransfers(json);})
-  //      console.log("testing - optimized transfers");
-
-  //      // console.log("Addy has: " + transactions.Addy);
-  //      <p>
-  //        JSON.stringify(optimizedTransfers);
-  //      </p>
-  //      console.log(JSON.stringify(transactions));
-  // }
-
 // POSTING
 
   // (postSpending) gives a single spending to the backend
   // name (payer name) amountPaid (to be split) -> [backend]
+
   function postSpending(event) {
-    // read from the text box, then post as a spending
     event.preventDefault();
 
     var myHeaders = new Headers();
@@ -96,7 +65,6 @@ function App() {
   // (postTransfer) gives a single transfer to the backend
   // transferFrom (debitor) transferTo (creditor) transferAmount -> [backend]
   function postTransfer(event) {
-    // read from the text box, then post as a transaction
     event.preventDefault();
 
     var myHeaders = new Headers();
@@ -194,45 +162,31 @@ function App() {
   //- ((transaction, i) => f): creates a function [f] with props [transaction] and [i].
   function showOptimizedTransfer(event){
     if (!optimizedTransfersFlag) {
-      fetch("http://localhost:8080/optimizedroutes") // NOT SURE IF i can put fetch back to back.
+      fetch("http://localhost:8080/optimizedroutes")
        .then(res => res.json()) //synchronization
        .then(json => {setOptimizedTransfers(json);})
        console.log("testing - optimized transfers");
 
       setOptimizedTransfersFlag(true);
     }
-       // console.log("Addy has: " + transactions.Addy);
-       //console.log(JSON.stringify(transactions));
 
-    return (<p>{JSON.stringify(optimizedTransfers)}</p>)
-
-    // transfers.map((transfer, i) => {
-    //     if (transfer.hasOwnProperty(nameSearch)) {
-    //       return (<p key={i}> {nameSearch} has: {JSON.stringify(optimizedTransfers.nameSearch)}</p>)
-    //     }
-    //     return <p key={i}>{JSON.stringify(optimizedTransfers)}</p>
-    //   })
+    return (<p className="bodyOutputText">
+      {JSON.stringify(optimizedTransfers)}
+      </p>)
   }
 
-  // what is this ???
   function showAllTransactions() {
     if (!transactionFlag) {
-      fetch("http://localhost:8080/transactions") // NOT SURE IF i can put fetch back to back.
+      fetch("http://localhost:8080/transactions")
         .then(res => res.json()) //synchronization
         .then(json => {setTransactions(json);})
         console.log("testing - set transactions");
       setTransactionFlag(true);
     }
 
-      // // console.log("Addy has: " + transactions.Addy);
-      // <p>
-      //   JSON.stringify(transactions);
-      // </p>
-      // console.log(JSON.stringify(transactions));
-
     var component = <p></p>
     for (const transaction in transactions) {
-      component = <p>
+      component = <p className="bodyOutputText">
         {component}
         {JSON.stringify(transactions[transaction])}
       </p>
@@ -252,7 +206,7 @@ function App() {
 
     var component = <p></p>
     for (const balance in balances) {
-      component = <p>
+      component = <p className="bodyOutputText">
         {component}
         {JSON.stringify(balances[balance])}
       </p>
@@ -269,16 +223,10 @@ function App() {
       setUserFlag(true);
     }
       console.log("testing - set users");
-      //var component = <p> {JSON.stringify(users)}</p>
+
     var component = <p></p>
-    // for (let i = 0; i < users.length; i++) {
-    //     component = <p>
-    //       {component}
-    //       {JSON.stringify(users[i])}
-    //     </p>
-    // }
     for (const user in users) {
-      component = <p>
+      component = <p className="bodyOutputText">
         {component}
         {JSON.stringify(users[user])}
       </p>
@@ -288,22 +236,12 @@ function App() {
     //return Component;
   }
 
-  function test() {
-     var test = <p>this is a test</p>
-
-     return test;
-   }
-
   return (
     <div className="App">
       <header className="App-header">
         <p className="titleText">
           That Vacay!
         </p>
-
-        {/* <Button variant="primary" onClick={activateLasers}>
-          Activate Lasers
-        </Button> */}
         
         <p className="functionHeader">
           Add a Person:
@@ -377,58 +315,31 @@ function App() {
           <Button onClick={postTransfer}> Post Transfer </Button>
         </form>
 
-        <p>
+        <p className="bodyText">
           Transaction History:
           {showAllTransactions()}
         </p>
 
-        <p>
+        <p className="bodyText">
           Optimized Transfer Routes:
           {showOptimizedTransfer()}
         </p>
 
-        <p>
+        <p className="bodyText">
           Balances:
           {showBalances()}
         </p>
 
-        <p>
+        <p className="bodyText">
           People:
           {/* {test()} */}
           {showPeople()}
         </p>
 
-        {/* <Button variant="primary" onClick={showPeople}>
-          Show People
-        </Button> */}
-
-
-        {/* <form>
-          <label className="bodyText">
-            Get optimized transfer for:
-            <input
-              type="text"
-              name="name" // do i need to change this?
-              onChange={handleOptimizedChange}
-              />
-          </label>
-          <Button onClick={showOptimizedTransfer}> Find </Button>
-        </form> */}
-
-        {/* <Button variant="primary" onClick={showAllTransactions}>
-          See Transaction History
-        </Button> */}
-
       </header>
     </div>
     
   );
-
-  // return (
-  //   <div style={{ backgroundImage: `url(${background})` }}>
-  //     Hello World
-  //   </div>
-  // );
   
 }
 

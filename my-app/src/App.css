@@ -9,20 +9,26 @@
 } */
 
 .bodyText {  
-  color: rgb(255, 255, 255);   
-  font-family: "Marker Felt";
+  color: rgb(255, 255, 255);
+  font-family: "Bahnschrift SemiBold";
+  font-size: 1.5rem;
+}
+
+.bodyOutputText {  
+  color: rgb(255, 225, 106);   
+  font-family: "Bahnschrift SemiBold";
   font-size: 1.5rem;
 }
 
 .functionHeader {  
-  color: rgb(255, 255, 255);   
-  font-family: "Marker Felt";
+  color: rgb(186, 255, 156); 
+  font-family: "Bahnschrift SemiBold";
   font-size: 2rem;
 }
 
 .titleText {  
-  color: rgb(255, 255, 255);   
-  font-family: "Marker Felt";
+  color: rgb(186, 255, 156);   
+  font-family: "Bahnschrift SemiBold";
   font-size: 3rem;
 }
 
