@@ -171,7 +171,7 @@ function App() {
     }
 
     return (<p className="bodyOutputText">
-      {JSON.stringify(optimizedTransfers).replace('\\"','')}
+      {JSON.stringify(optimizedTransfers).replaceAll('"','').replaceAll('{','').replaceAll('}','').replaceAll(','," | ")}
       </p>)
   }
 
@@ -188,7 +188,7 @@ function App() {
     for (const transaction in transactions) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(transactions[transaction]).replace('\\"','')}
+        {JSON.stringify(transactions[transaction]).replaceAll('"','').replaceAll('{','').replaceAll('}','').replaceAll(','," | ")}
       </p>
     }
     return component;
@@ -208,7 +208,7 @@ function App() {
     for (const balance in balances) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(balances[balance]).replace('\\"','')}
+        {JSON.stringify(balances[balance]).replaceAll('"','').replaceAll('{','').replaceAll('}','').replaceAll(','," | ")}
       </p>
     }
     return component;
@@ -228,7 +228,7 @@ function App() {
     for (const user in users) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(users[user]).replace('\\"','')}
+        {JSON.stringify(users[user]).replaceAll('"','').replaceAll('{','').replaceAll('}','').replaceAll(','," | ")}
       </p>
    }
 
