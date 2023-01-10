@@ -2,7 +2,9 @@ import logo from './logo.svg';
 import './App.css';
 import {Component, useState} from 'react';
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown, Form } from 'react-bootstrap';
+//import { MDBSelect } from 'mdb-react-ui-kit';
+
 // import background from "./img/petals.png";
 
 function App() {
@@ -27,6 +29,9 @@ function App() {
   const [balanceFlag, setBalanceFlag] = useState(false);
   const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
+  const Title1 = '------'
+  
+  //const Names = ['Adeline', 'Julia', 'Sherry'];
 
 // POSTING
 
@@ -236,12 +241,90 @@ function App() {
     //return Component;
   }
 
+  function handleSelectChange(event) {
+    console.log("testing - on select");
+    console.log(event.target.value);
+    
+  }
+
+  // $('form-select').on('click',function() {
+  //   alert($(this).val());
+  //   console.log($(this).val());
+  // });
+
+  // createSelectItems(usersjson) {
+  //   let items = [];         
+  //   for (let i = 0; i <= this.props.maxValue; i++) {             
+  //     items.push(usersjson[i]);   
+  //     //items.push(<option key={i} value={i}>{i}</option>);   
+  //        //here I will be creating my options dynamically based on
+  //        //what props are currently passed to the parent component
+  //   }
+  //   return items;
+  // }
+  
+
   return (
     <div className="App">
       <header className="App-header">
         <p className="titleText">
           That Vacay!
         </p>
+
+        {/* <Dropdown>
+        <Dropdown.Toggle variant="success">
+          Select a name
+        </Dropdown.Toggle>
+        <Dropdown.Menu onSelect={test}>
+          <Dropdown.Item href="#">
+            Home Page
+          </Dropdown.Item>
+          <Dropdown.Item href="#">
+            Settings
+          </Dropdown.Item>
+          <Dropdown.Item href="#">
+            Logout
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown> */}
+
+      {/* <Form.Group controlId="formBasicSelect">
+        <Form.Label>Select Norm Type</Form.Label>
+        <Form.Control
+          as="select"
+          value={1}
+          onChange={test}
+        >
+          <option value="DICTUM">Dictamen</option>
+          <option value="CONSTANCY">Constancia</option>
+          <option value="COMPLEMENT">Complemento</option>
+        </Form.Control>
+      </Form.Group> */}
+
+
+      {/* <Dropdown>
+        <Dropdown.Toggle variant="success" onSelect={test}>
+          {Title1}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {users.map(x => (
+            <Dropdown.Item >{x}</Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown> */}
+
+      {/* <MDBSelect
+      data={[
+        { text: 'One', value: 1 },
+        { text: 'Two', value: 2 },
+        { text: 'Three', value: 3 },
+        { text: 'Four', value: 4 },
+        { text: 'Five', value: 5 },
+        { text: 'Six', value: 6 },
+        { text: 'Seven', value: 7 },
+        { text: 'Eight', value: 8 },
+      ]}
+    /> */}
         
         <p className="functionHeader">
           Add a Person:
@@ -249,7 +332,7 @@ function App() {
 
         <form>
           <label className="bodyText">
-            Name:  
+            Name:              
             <input
               type="text"
               name="name"  // do i need to change this?
@@ -263,15 +346,22 @@ function App() {
           Split a cost:
         </p>
 
+        <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
+        <option selected>[split a cost - name]</option>
+        {users.map(x => (
+            <option value={x}>{x}</option>
+          ))}
+      </select>
+
         <form>
-          <label className="bodyText">
+          {/* <label className="bodyText">
             Name:
             <input
               type="text"
               name="name"
               onChange={handleNameChange}
               />
-          </label>
+          </label> */}
           <label className="bodyText">
             Paid:
             <input
@@ -287,8 +377,22 @@ function App() {
           Record a transfer:
         </p>
 
+        <select onChange={handleTransferFromChange} class="form-select" aria-label="Default select example" >
+        <option selected>[transfer - from]</option>
+        {users.map(x => (
+            <option value={x}>{x}</option>
+          ))}
+      </select>
+
+      <select onChange={handleTransferToChange} class="form-select" aria-label="Default select example" >
+        <option selected>[transfer - to]</option>
+        {users.map(x => (
+            <option value={x}>{x}</option>
+          ))}
+      </select>
+
         <form>
-          <label className="bodyText">
+          {/* <label className="bodyText">
             From:
             <input
               type="text"
@@ -303,7 +407,7 @@ function App() {
               name="to"
               onChange={handleTransferToChange}
               />
-          </label>
+          </label> */}
           <label className="bodyText">
             Amount transferred:
             <input
