@@ -42,7 +42,7 @@ function App() {
     var raw = JSON.stringify({
       "Name": name,
       "Amount": amountPaid
-    }, "", 9).replace('\\"','');
+    });
 
     var requestOptions = {
       method: 'POST',
@@ -74,7 +74,7 @@ function App() {
       "From": transferFrom,
       "To": transferTo,
       "Amount": transferAmount
-    }, "", 9).replace('\\"','');
+    });
 
     var requestOptions = {
       method: 'POST',
@@ -104,7 +104,7 @@ function App() {
 
     var raw = JSON.stringify({
       "Name": newPerson
-    }, "", 9).replace('\\"','');
+    });
 
     var requestOptions = {
       method: 'POST',
@@ -171,7 +171,7 @@ function App() {
     }
 
     return (<p className="bodyOutputText">
-      {JSON.stringify(optimizedTransfers, "", 9).replace('\\"','')}
+      {JSON.stringify(optimizedTransfers).replace('\\"','')}
       </p>)
   }
 
@@ -188,7 +188,7 @@ function App() {
     for (const transaction in transactions) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(transactions[transaction], "", 9).replace('\\"','')}
+        {JSON.stringify(transactions[transaction]).replace('\\"','')}
       </p>
     }
     return component;
@@ -208,7 +208,7 @@ function App() {
     for (const balance in balances) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(balances[balance], "", 9).replace('\\"','')}
+        {JSON.stringify(balances[balance]).replace('\\"','')}
       </p>
     }
     return component;
@@ -228,7 +228,7 @@ function App() {
     for (const user in users) {
       component = <p className="bodyOutputText">
         {component}
-        {JSON.stringify(users[user], "", 9).replace('\\"','')}
+        {JSON.stringify(users[user]).replace('\\"','')}
       </p>
    }
 
