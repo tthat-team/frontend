@@ -29,7 +29,7 @@ function App() {
   const [balanceFlag, setBalanceFlag] = useState(false);
   const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState("CAD");
 
   //const Title1 = '------'
   
@@ -147,7 +147,7 @@ function App() {
       redirect: 'follow'
     };
 
-    fetch("http://localhost:8080/currency", requestOptions)
+    fetch("http://localhost:8080/exchange", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -382,7 +382,7 @@ function App() {
           Split a cost:
         </p>
 
-        <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
+        {/* <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
           <option selected>[split a cost - name]</option>
             {users.map(x => (
               <option value={x}>{x}</option>
@@ -390,14 +390,6 @@ function App() {
         </select>
 
         <form>
-          {/* <label className="bodyText">
-            Name:
-            <input
-              type="text"
-              name="name"
-              onChange={handleNameChange}
-              />
-          </label> */}
           <label className="bodyText">
             Paid:
             <input
@@ -407,43 +399,53 @@ function App() {
               />
           </label>
           <Button onClick={postSpending}> Post Spending </Button>
-        </form>
+        </form> */}
 
-        <p className="functionHeader">
-          Record a transfer:
-        </p>
-
-        <select onChange={handleTransferFromChange} class="form-select" aria-label="Default select example" >
-        <option selected>[transfer - from]</option>
-        {users.map(x => (
-            <option value={x}>{x}</option>
-          ))}
-      </select>
-
-      <select onChange={handleTransferToChange} class="form-select" aria-label="Default select example" >
-        <option selected>[transfer - to]</option>
-        {users.map(x => (
-            <option value={x}>{x}</option>
-          ))}
-      </select>
-
-        <form>
-          {/* <label className="bodyText">
-            From:
+      <form>
+        <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
+          <option selected>[split a cost - name]</option>
+            {users.map(x => (
+              <option value={x}>{x}</option>
+            ))}
+        </select>
+        <label className="bodyText">
+            Paid:
             <input
               type="text"
-              name="from"
-              onChange={handleTransferFromChange}
+              name="amountPaid"
+              onChange={handleAmountPaidChange}
               />
+        </label>
+        <Button onClick={postSpending}> Post Spending </Button>
+      </form>
+
+      <p className="functionHeader">
+        Record a transfer:
+      </p>
+      
+      <form>
+        <div>
+          <label className="bodyText">
+            From:
+            <select onChange={handleTransferFromChange} class="form-select" aria-label="Default select example" >
+              <option selected>[transfer - from]</option>
+              {users.map(x => (
+                  <option value={x}>{x}</option>
+              ))}
+            </select>
           </label>
+          
           <label className="bodyText">
             To:
-            <input
-              type="text"
-              name="to"
-              onChange={handleTransferToChange}
-              />
-          </label> */}
+            <select onChange={handleTransferToChange} class="form-select" aria-label="Default select example" >
+            <option selected>[transfer - to]</option>
+            {users.map(x => (
+                <option value={x}>{x}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div>
           <label className="bodyText">
             Amount transferred:
             <input
@@ -452,11 +454,16 @@ function App() {
               onChange={handleTransferAmountChange}
               />
           </label>
-          <Button onClick={postTransfer}> Post Transfer </Button>
-        </form>
+        </div>
+        <Button onClick={postTransfer}> Post Transfer </Button>
+      </form>
+
+      <p className="functionHeader">
+        Results:
+      </p>
 
         <select onChange={handleCurrencyChange} class="form-select" aria-label="Default select example" >
-          <option selected>Display Currencies in:</option>
+          <option selected>Display currency in:</option>
             <option value='CAD'>CAD</option>
             <option value='USD'>USD</option>
             <option value='EUR'>EUR</option>
