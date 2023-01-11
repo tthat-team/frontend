@@ -29,7 +29,9 @@ function App() {
   const [balanceFlag, setBalanceFlag] = useState(false);
   const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
-  const Title1 = '------'
+  const [currency, setCurrency] = useState("");
+
+  //const Title1 = '------'
   
   //const Names = ['Adeline', 'Julia', 'Sherry'];
 
@@ -128,6 +130,34 @@ function App() {
 
   }
 
+  function postCurrency(event) {
+    event.preventDefault();
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "Currency": currency
+    })
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://localhost:8080/currency", requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
+
+    setBalanceFlag(false);
+    setTransactionFlag(false);
+    setOptimizedTransfersFlag(false);
+
+  }
+
 
 // HANDLING CHANGES
 
@@ -161,6 +191,10 @@ function App() {
   // HANDLE OPTIMIZATION
   function handleOptimizedChange(event){
     setNameSearch(event.target.value);
+  }
+
+  function handleCurrencyChange(event){
+    setCurrency(event.target.value);
   }
 
   //- map() creates a new array from calling a function for every array event
@@ -271,6 +305,8 @@ function App() {
           That Vacay!
         </p>
 
+        
+
         {/* <Dropdown>
         <Dropdown.Toggle variant="success">
           Select a name
@@ -347,11 +383,11 @@ function App() {
         </p>
 
         <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
-        <option selected>[split a cost - name]</option>
-        {users.map(x => (
-            <option value={x}>{x}</option>
-          ))}
-      </select>
+          <option selected>[split a cost - name]</option>
+            {users.map(x => (
+              <option value={x}>{x}</option>
+            ))}
+        </select>
 
         <form>
           {/* <label className="bodyText">
@@ -418,6 +454,15 @@ function App() {
           </label>
           <Button onClick={postTransfer}> Post Transfer </Button>
         </form>
+
+        <select onChange={handleCurrencyChange} class="form-select" aria-label="Default select example" >
+          <option selected>Display Currencies in:</option>
+            <option value='CAD'>CAD</option>
+            <option value='USD'>USD</option>
+            <option value='EUR'>EUR</option>
+            <option value='CNY'>CNY</option>
+            <option value='MXN'>MXN</option>
+        </select>
 
         <p className="bodyText">
           Transaction History:
