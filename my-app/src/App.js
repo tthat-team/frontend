@@ -296,16 +296,13 @@ function App() {
   //   }
   //   return items;
   // }
-  
 
   return (
     <div className="App">
       <header className="App-header">
         <p className="titleText">
           That Vacay!
-        </p>
-
-        
+        </p>        
 
         {/* <Dropdown>
         <Dropdown.Toggle variant="success">
@@ -458,18 +455,23 @@ function App() {
         <Button onClick={postTransfer}> Post Transfer </Button>
       </form>
 
-      <p className="functionHeader">
-        Results:
-      </p>
-
-        <select onChange={handleCurrencyChange} class="form-select" aria-label="Default select example" >
-          <option selected>Display currency in:</option>
-            <option value='CAD'>CAD</option>
-            <option value='USD'>USD</option>
-            <option value='EUR'>EUR</option>
-            <option value='CNY'>CNY</option>
-            <option value='MXN'>MXN</option>
-        </select>
+      <form>
+        <div>
+          <p className="functionHeader">
+            Results:
+          </p>
+        </div>
+        <div>
+          <select onChange={handleCurrencyChange} class="form-select" aria-label="Default select example" >
+            <option selected>Display currency in:</option>
+              <option value='CAD'>CAD</option>
+              <option value='USD'>USD</option>
+              <option value='EUR'>EUR</option>
+              <option value='CNY'>CNY</option>
+              <option value='MXN'>MXN</option>
+          </select>
+        </div>
+      </form>
 
         <p className="bodyText">
           Transaction History:
