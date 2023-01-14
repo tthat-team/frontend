@@ -26,6 +26,12 @@
   font-size: 2rem;
 }
 
+.dropdownText {
+  color: rgb(0, 0, 0); 
+  font-family: "Bahnschrift SemiBold";
+  font-size: 1.5rem;
+}
+
 .titleText {  
   color: rgb(186, 255, 156);   
   font-family: "Bahnschrift SemiBold";

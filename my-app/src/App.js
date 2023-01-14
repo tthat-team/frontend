@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import {Component, useState} from 'react';
 import React from 'react';
-import { Button, Dropdown, Form } from 'react-bootstrap';
+import { Alert, Button, Dropdown, Form, FormControl } from 'react-bootstrap';
 //import { MDBSelect } from 'mdb-react-ui-kit';
 
 // import background from "./img/petals.png";
@@ -30,6 +30,8 @@ function App() {
   const [optimizedTransfersFlag, setOptimizedTransfersFlag] = useState(false);
 
   const [currency, setCurrency] = useState("CAD");
+  const [show, setShow] = useState(true);
+
 
   //const Title1 = '------'
   
@@ -41,6 +43,7 @@ function App() {
   // name (payer name) amountPaid (to be split) -> [backend]
 
   function postSpending(event) {
+    console.log("in postSpending function");
     event.preventDefault();
 
     var myHeaders = new Headers();
@@ -281,6 +284,35 @@ function App() {
     
   }
 
+  function AlertMessage() {
+    const [show, setShow] = useState(true);
+
+    if (show) {
+      return (
+        <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+        <p>
+          Error message here
+        </p>
+      </Alert>
+      )
+    }
+    //return <Button onClick={() => setShow(true)}>Show Alert Again</Button>;
+  }
+
+  // function fade(element) {
+  //   var op = 1;  // initial opacity
+  //   var timer = setInterval(function () {
+  //       if (op <= 0.1){
+  //           clearInterval(timer);
+  //           element.style.display = 'none';
+  //       }
+  //       element.style.opacity = op;
+  //       element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+  //       op -= op * 0.1;
+  //   }, 50);
+  // }
+
+
   // $('form-select').on('click',function() {
   //   alert($(this).val());
   //   console.log($(this).val());
@@ -299,6 +331,28 @@ function App() {
 
   return (
     <div className="App">
+      <div>
+        <AlertMessage />
+      </div>
+      {/* <Alert onClose={setShowAlert(false)} class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+        <button type="button" class="close fade show" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </Alert> */}
+
+{/* <div class="alert alert-success alert-dismissible">
+  <button href="#" class="close" data-dismiss="alert" aria-label="close">&times;</button>
+  <strong>Warning!</strong> This is a warning
+</div> */}
+
+{/* <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+</div> */}
+
       <header className="App-header">
         <p className="titleText">
           That Vacay!
@@ -399,12 +453,15 @@ function App() {
         </form> */}
 
       <form>
-        <select onChange={handleNameChange} class="form-select" aria-label="Default select example" >
-          <option selected>[split a cost - name]</option>
-            {users.map(x => (
-              <option value={x}>{x}</option>
-            ))}
-        </select>
+        <div>
+          <select 
+          onChange={handleNameChange} class="form-select" className="dropdownText" aria-label="Default select example" >
+            <option selected>- select -</option>
+              {users.map(x => (
+                <option value={x}>{x}</option>
+              ))}
+          </select>
+        </div>
         <label className="bodyText">
             Paid:
             <input
@@ -424,8 +481,8 @@ function App() {
         <div>
           <label className="bodyText">
             From:
-            <select onChange={handleTransferFromChange} class="form-select" aria-label="Default select example" >
-              <option selected>[transfer - from]</option>
+            <select onChange={handleTransferFromChange} class="form-select" className="dropdownText" aria-label="Default select example" >
+              <option selected>- select -</option>
               {users.map(x => (
                   <option value={x}>{x}</option>
               ))}
@@ -434,8 +491,8 @@ function App() {
           
           <label className="bodyText">
             To:
-            <select onChange={handleTransferToChange} class="form-select" aria-label="Default select example" >
-            <option selected>[transfer - to]</option>
+            <select onChange={handleTransferToChange} class="form-select" className="dropdownText" aria-label="Default select example" >
+            <option selected>- select -</option>
             {users.map(x => (
                 <option value={x}>{x}</option>
               ))}
@@ -462,7 +519,7 @@ function App() {
           </p>
         </div>
         <div>
-          <select onChange={handleCurrencyChange} class="form-select" aria-label="Default select example" >
+          <select onChange={handleCurrencyChange} class="form-select" className="dropdownText" aria-label="Default select example" >
             <option selected>Display currency in:</option>
               <option value='CAD'>CAD</option>
               <option value='USD'>USD</option>
